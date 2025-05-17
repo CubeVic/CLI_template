@@ -1,0 +1,13 @@
+[app]
+app_name = "MyApp"
+app_version = "0.1.0"
+
+[logging]
+level = "INFO"
+format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+use_rich = true
+
+[features]
+# Default values for the application
+greetings = "Hello, World!" 
+env_prefix = "APP_"

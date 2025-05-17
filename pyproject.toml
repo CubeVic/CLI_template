@@ -1,22 +1,25 @@
-[project]
+[tool.poetry]
 name = "cli-template"
 version = "0.1.0"
 description = "Template for all CLI based projects"
-authors = [
-    {name = "CubeVic",email = "victoraguirre.f@gmail.com"}
-]
-license = {text = "MIT"}
+authors = ["CubeVic <victoraguirre.f@gmail.com>"]
+license = "MIT"
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = [
-    "typer (>=0.15.4,<0.16.0)"
-]
+packages = [{ include = "app" }]
 
-[tool.poetry]
+[tool.poetry.dependencies]
+python = ">=3.11"
+typer = ">=0.15.4,<0.16.0"
+rich = ">=14.0.0,<15.0.0"
+python-dotenv = "^1.1.0"
+pydantic = "^2.11.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
 hypothesis = "^6.131.18"
+
+[tool.poetry.scripts]
+cli-template = "app.main:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

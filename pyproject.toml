@@ -1,0 +1,23 @@
+[project]
+name = "cli-template"
+version = "0.1.0"
+description = "Template for all CLI based projects"
+authors = [
+    {name = "CubeVic",email = "victoraguirre.f@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "typer (>=0.15.4,<0.16.0)"
+]
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+hypothesis = "^6.131.18"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

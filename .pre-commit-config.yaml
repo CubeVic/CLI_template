@@ -1,0 +1,19 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: end-of-file-fixer           # Ensure that text files have a newline character at the end of the file
+  - id: check-merge-conflict        # Check for files that contain merge conflict strings.
+  - id: detect-private-key          # Identify and prevent the accidental inclusion of private keys within code repositories.
+  - id: fix-byte-order-marker       # Checks for the presence of the Byte Order Mark (BOM) in text files (e.g. UTF-8 BOM)
+  - id: check-yaml                  # Verify the syntax and structure of YAML files
+
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version.
+  rev: v0.9.3
+  hooks:
+    # Run the linter.
+    - id: ruff
+      args: [ --fix ]
+    # Run the formatter.
+    - id: ruff-format

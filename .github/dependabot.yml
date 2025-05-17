@@ -3,12 +3,12 @@ updates:
   # security update bot - weekly
   - package-ecosystem: "pip"
     directory: "/"
+    target-branch: "main"
     schedule:
       interval: "weekly"
     commit-message:
       prefix: "security"
       include: "scope"
-    security-updates-only: true
     open-pull-requests-limit: 3
     labels:
       - "dependencies"
@@ -20,13 +20,14 @@ updates:
       - "CubeVic"
     groups:
       pip-security:
-        applies-to: "security-updates"
+        applies-to: security-updates
         patterns:
           - "*"
 
   # dependency update bot - Monthly
   - package-ecosystem: "pip"
     directory: "/"
+    target-branch: "develop"
     schedule:
       interval: "monthly"
       day: "monday"
@@ -35,7 +36,6 @@ updates:
     commit-message:
       prefix: "deps"
       include: "scope"
-    security-updates-only: false
     open-pull-requests-limit: 3
     allow:
       - dependency-type: "direct"
@@ -52,6 +52,6 @@ updates:
       - "CubeVic"
     groups:
       pip-monthly:
-        applies-to: "version-updates"
+        applies-to: version-updates
         patterns:
           - "*"

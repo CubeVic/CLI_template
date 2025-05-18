@@ -39,9 +39,11 @@ class FeatureConfig(BaseModel):
     env_prefix: str = Field("APP_", description="Prefix for environment variables")
 
 
+# this can use BaseSettings from pydantic_settings but couln't get it to work when the env_prefix is set in the toml
+# I couldn't maked it work as a "dynamically" load the prefix and then build the env model using Base Settings.
 class EnvConfig(BaseModel):
-    app_env: str = Field("development", description="Environment of the application")
-    app_secret_key: Optional[SecretStr] = Field(None, description="Secret key for the application")
+    env: str = Field("development", description="Environment of the application")
+    secret_key: Optional[SecretStr] = Field(None, description="Secret key for the application")
 
 
 class Config(BaseModel):
@@ -51,27 +53,27 @@ class Config(BaseModel):
     env: EnvConfig = Field(default_factory=EnvConfig)
 
     @classmethod
-    def load(cls):
-        config = {}
+    def load(cls) -> "Config":
+        config_dict = {}
+
+        # Step 1: Load from config.toml
         if CONFIG_PATH.exists():
             with open(CONFIG_PATH, "rb") as f:
-                config = tomllib.load(f)
+                config_dict = tomllib.load(f)
 
-        # Build the 'env' section explicitly
-        env_section = {}
-        for k, v in os.environ.items():
-            k_lower = k.lower()
+        # build the env object so the model can be later build
+        env_config = {}
+        # make sure to extract only env variable swith the prefix set in the toml if not use `APP_`
+        env_prefix = config_dict.get("features", {}).get("env_prefix", "APP_")
 
-            # Map to expected nested keys
-            if k_lower == "app_env":
-                env_section["app_env"] = v
-            elif k_lower == "app_secret_key":
-                env_section["app_secret_key"] = _mask_if_secret(k, v)
+        for key, value in os.environ.items():
+            if key.startswith(env_prefix):
+                env_key = key[len(env_prefix):].lower()
+                env_config[env_key] = _mask_if_secret(key, value)
 
-        # Merge into config under 'env'
-        config["env"] = env_section
+        config_dict["env"] = env_config
 
-        return cls.model_validate(config)
+        return cls.model_validate(config_dict)
 
 
 @lru_cache()

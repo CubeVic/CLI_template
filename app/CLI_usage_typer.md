@@ -1,4 +1,4 @@
-## 📘 CLI Usage Guide: Typer Basics
+# 📘 CLI Usage Guide: Typer Basics
 
 This project uses [**Typer**](https://typer.tiangolo.com/) to build command-line interfaces (CLIs). This guide is a quick reference to help you understand how the CLI is structured and how to use and extend it.
 
@@ -133,7 +133,48 @@ Example:
 
 ---
 
+# 🔁 What is `@app.callback()`?
 
+The `@app.callback()` decorator in Typer is used to define a function that runs before any subcommand, and is commonly used to:
+
+* Load shared context (like configuration).
+*  Set up global options (e.g., --config, --verbose)
+*  Inject values into typer.Context for use by all commands
+
+### 📌 Example
+
+```python
+import typer
+from pydantic import BaseModel
+
+app = typer.Typer()
+
+class Config(BaseModel):
+    debug: bool = False
+
+@app.callback()
+def main(
+    ctx: typer.Context,
+    debug: bool = typer.Option(False, help="Enable debug mode")
+):
+    ctx.obj = Config(debug=debug)
+```
+
+Now you can access ctx.obj.debug in all subcommands.
+
+### 🔄 Behavior
+
+`@app.callback()` replaces the default command for the base CLI (i.e., mycli with no subcommand).
+
+It also runs before all subcommands, making it ideal for shared setup.
+
+### ✅ Use Cases
+
+* Load config or .env values once.  
+* Pass objects (like DB clients, settings) into subcommands.  
+* Set logging levels globally.  
+
+---
 
 ### 📚 More Resources
 
@@ -141,4 +182,3 @@ Example:
 * [Typer Examples](https://github.com/tiangolo/typer/tree/master/examples)
 * [Click Docs](https://click.palletsprojects.com/)
 * [FastAPI Docs](https://fastapi.tiangolo.com/) (similar style)
-

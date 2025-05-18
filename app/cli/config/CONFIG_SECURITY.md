@@ -13,6 +13,7 @@ This project uses Pydantic models and SecretStr types to safely handle configura
 ## 📄 Example Configuration
 
 ### config.toml
+
 ```toml
 [env]
 APP_ENV = "development"
@@ -20,7 +21,7 @@ APP_ENV = "development"
 
 ### .env
 
-```
+```sh
 API_TOKEN=super-secret-token
 ```
 

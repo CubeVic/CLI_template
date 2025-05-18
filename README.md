@@ -35,9 +35,33 @@ A modern, Docker-ready template for building command-line applications in Python
 # Clone the repo
 git clone https://github.com/your-org/python-cli-template.git
 cd python-cli-template
+```
 
 # Install dependencies
 poetry install
 
 # Run a sample command
 poetry run python app/main.py hello --name Alice
+
+## 🔄 Modifying for New Projects
+
+If you're using this repo as a template for a new CLI project:
+
+| What to Change                             | Why                                                            |
+| ------------------------------------------ | -------------------------------------------------------------- |
+| `ENTRYPOINT` in `Dockerfile`               | Update if your CLI script name changes (e.g. `my-cli-tool`)    |
+| Docker image name (`cli-template`)         | Rename to match your new project                               |
+| `pyproject.toml` → `[tool.poetry.scripts]` | Update the script name and entry path                          |
+| Project folder name (`app/`)               | Ensure it's included in `packages = [...]` in `pyproject.toml` |
+
+Example:
+```toml
+[tool.poetry.scripts]
+my-cli-tool = "my_project.main:main"
+```
+
+And in Dockerfile:
+
+```docker
+ENTRYPOINT ["my-cli-tool"]
+```

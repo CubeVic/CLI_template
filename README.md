@@ -12,7 +12,7 @@ A modern, Docker-ready template for building command-line applications in Python
 - 🧹 **Linting** with `ruff`
 - ✅ **Pre-commit hooks** for formatting and code quality
 - 🐳 **Docker** support for reproducible builds
-- 🛠️ **Makefile** to simplify common tasks
+- 🛠️ **Makefile** to simplify common tasks (empty for now)
 - 🎨 **Rich logging and CLI output**
 
 ---
@@ -38,10 +38,16 @@ cd python-cli-template
 ```
 
 # Install dependencies
+
+```sh
 poetry install
+```
 
 # Run a sample command
+
+```sh
 poetry run python app/main.py hello --name Alice
+```
 
 ## 🔄 Modifying for New Projects
 
@@ -63,5 +69,9 @@ my-cli-tool = "my_project.main:main"
 And in Dockerfile:
 
 ```docker
-ENTRYPOINT ["my-cli-tool"]
+ENTRYPOINT ["poetry", "run", "cli-template"]
 ```
+
+⚠️ When running inside Docker, we use `poetry run cli-template` instead of relying on script installation.
+
+This ensures compatibility even if Poetry doesn't install the CLI script directly in some environments. You can ignore the warning about the script not being installed — everything still works as expected.
